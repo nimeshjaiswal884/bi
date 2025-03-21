@@ -1,0 +1,10 @@
+bankloan<-read.csv("C:/Users/Nimesh/Downloads/BANK LOAN.csv")
+library(caret)
+bankloan$DEFAULTER<-as.factor(bankloan$DEFAULTER)
+index<-createDataPartition(bankloan$DEFAULTER, p = 0.8, list = FALSE)
+traindata<-bankloan[index,]
+testdata<-bankloan[-index,]
+library(rpart)
+library(rpart.plot)
+tree<-rpart(DEFAULTER~.,data = traindata, method = "class")
+rpart.plot(tree, type = 4, extra = 101)
