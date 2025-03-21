@@ -1,0 +1,16 @@
+
+library(ggplot2)
+library(caret)
+
+data("mtcars")
+
+set.seed(89)
+
+cor(mtcars)
+
+sample_index <- sample(1:nrow(mtcars), 0.8 * nrow(mtcars))
+train_data <- mtcars[sample_index, ]
+test_data <- mtcars[-sample_index, ]
+
+linearModel <- lm(mpg ~ hp + drat + am, data = train_data)
+summary(linearModel)
