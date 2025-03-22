@@ -1,0 +1,30 @@
+# KNN METHOD
+# LOAD DATASET
+bankloan <- read.csv("C:\\Users\\Admin\\Downloads\\BANK LOAN (1).CSV")
+
+library(caret)
+
+index <- createDataPartition(bankloan$DEFAULTER, p = 0.8, list = FALSE)
+
+traindata <- bankloan[index, ]
+testdata <- bankloan[-index, ]
+
+# Remove unnecessary columns
+bankloan1 <- subset(bankloan, select = -c(SN, DEFAULTER))
+bankloan2 <- scale(bankloan1)
+
+# Create class vector
+ytrain <- bankloan$DEFAULTER[index]
+ytest <- bankloan$DEFAULTER[-index]
+
+library(class)
+
+# KNN Model with k = 23
+model_knn <- knn(traindata, testdata, k = 23, cl = ytrain)
+
+# Confusion matrix
+table(ytest, model_knn)
+
+# Performance evaluation
+sensitivity(as.factor(ytest), as.factor(model_knn), cutoff = 0.5)
+specificity(as.factor(ytest), as.factor(model_knn), cutoff = 0.5)
