@@ -1,0 +1,35 @@
+# Load packages
+library(caret)
+library(pROC)
+library(ggplot2)
+
+# Load data
+df <- read.csv("C:\\Users\\Admin\\Downloads\\BANK LOAN.CSV", header = TRUE)
+
+head(df)
+
+# Remove first column (assumed to be an index column)
+df <- df[, -1]
+
+# Convert target variable to factor
+df$DEFAULTER <- as.factor(df$DEFAULTER) # Converting numerical value of 0 and 1 to string
+
+str(df)
+
+set.seed(123)
+
+# Split data into training and testing
+splitindex <- createDataPartition(df$DEFAULTER, p = 0.8, list = FALSE)
+traindata <- df[splitindex, ]
+testdata <- df[-splitindex, ]
+
+# Check data distribution
+table(traindata$DEFAULTER)
+table(testdata$DEFAULTER)
+table(df$DEFAULTER)
+
+# Creating a Logistic Regression Model
+log_model <- glm(DEFAULTER ~ ., data = traindata, family = "binomial")
+
+# Model Summary
+summary(log_model)
